@@ -29,6 +29,7 @@ int jogador=1,numJogadas=0,vencedor=0,empate=0;
 		int lin,col;
 		printf("-----------------------------------\n");
 		printf("\n\tJOGADOR %d\n",jogador);
+		
 		while(1){
 			printf("\tDigite a linha: ");
 			scanf("%d",&lin);
@@ -36,68 +37,42 @@ int jogador=1,numJogadas=0,vencedor=0,empate=0;
 			scanf("%d",&col);
 			
 			if((lin>=0 && lin <3) && (col>=0 && col <3) && (tabuleiro[lin][col]==' ')){
-				if(jogador==1){
+				if(jogador==1)
 					tabuleiro[lin][col]='X';
-					jogador++;
-				}
-				else{
+				else
 					tabuleiro[lin][col]='O';
-					jogador--;
-				}
 				numJogadas++;
 				break;
 			}
-			else
-				printf("\tInforme uma posicao valida!\n\n");
+			printf("\n\tPOSICAO INVALIDA!!\n\n\n");
 		}
 	}
 	
-	void verifica_venceu(){//MELHORAR ESTA FUNCAO
+	void verifica_venceu(){
 		int aux;
-		//VERIFICA SE GANHOU POR LINHA OU COLUNA
-		for(aux=0;aux<3;aux++){	
-			if(tabuleiro[aux][0]==tabuleiro[aux][1] && tabuleiro[aux][1]==tabuleiro[aux][2]){
-				if(tabuleiro[aux][0]=='X')
-					printf("\n\tJogador 1 venceu!\n\n");
-				else if(tabuleiro[aux][0]=='O')
-					printf("\n\tJogador 2 venceu!\n\n");
-				
-				if(tabuleiro[aux][0]!=' ')
+		for(aux=0;aux<3;aux++){	//VERIFICA SE GANHOU POR LINHA
+			if(tabuleiro[aux][0]==tabuleiro[aux][1] && tabuleiro[aux][1]==tabuleiro[aux][2] && tabuleiro[aux][0]!=' '){
+					printf("\n\tJogador %d venceu!\n\n",jogador);
 					vencedor=1;
-				}
-				
-			else if(tabuleiro[0][aux]==tabuleiro[1][aux] && tabuleiro[1][aux]==tabuleiro[2][aux]){
-				if(tabuleiro[0][aux]=='X')
-					printf("\n\tJogador 1 venceu!\n\n");
-				else if(tabuleiro[0][aux]=='X')
-					printf("\n\tJogador 2 venceu!\n\n");
-				
-				if(tabuleiro[0][aux]!=' ')
-					vencedor=1;
-				}
+			}
+			// VERIFICA SE GANHOU POR COLUNA
+			else if(tabuleiro[0][aux]==tabuleiro[1][aux] && tabuleiro[1][aux]==tabuleiro[2][aux] && tabuleiro[0][aux]!=' '){
+				printf("\n\tJogador %d venceu!\n\n",jogador);
+				vencedor=1;
+			}
 		}
 		//VERIFICA SE GANHOU POR DIAGONAL PRINCIPAL
-		if(tabuleiro[0][0]==tabuleiro[1][1] && tabuleiro[1][1]==tabuleiro[2][2]){
-			if(tabuleiro[0][0]=='X')
-				printf("\n\tJogador 1 venceu!\n\n");
-			else if(tabuleiro[0][0]=='O')
-				printf("\n\tJogador 2 venceu!\n\n");
-				
-			if(tabuleiro[0][0]!=' ')
+		if(tabuleiro[0][0]==tabuleiro[1][1] && tabuleiro[1][1]==tabuleiro[2][2] && tabuleiro[0][0]!=' '){
+				printf("\n\tJogador %d venceu!\n\n",jogador);
 				vencedor=1;
 		}
 		//VERIFICA SE GANHOU POR DIAGONAL SECUNDARIA
-		else if(tabuleiro[0][2]==tabuleiro[1][1] && tabuleiro[1][1]==tabuleiro[2][0]){
-			if(tabuleiro[0][2]=='X')
-				printf("\n\tJogador 1 venceu!\n\n");
-			else if(tabuleiro[0][2]=='O')
-				printf("\n\tJogador 2 venceu!\n\n");
-				
-			if(tabuleiro[0][2]!=' ')
-				vencedor=1;
+		else if(tabuleiro[0][2]==tabuleiro[1][1] && tabuleiro[1][1]==tabuleiro[2][0] && tabuleiro[0][2]!=' '){
+			printf("\n\tJogador %d venceu!\n\n",jogador);
+		 	vencedor=1;
 		}
 		//VERIFICA EMPATE
-		if(numJogadas==9){
+		if(numJogadas==9 && vencedor==0){
 			printf("\n\tA partida empatou!\n\n");
 			empate=1;
 		}
@@ -130,7 +105,7 @@ int jogador=1,numJogadas=0,vencedor=0,empate=0;
 	
 	void jogarNovamente(){
 		int opt;
-		printf("\tDeseja jogar novamente [0-Nao | 1-Sim]\n");
+		printf("\tDeseja jogar novamente [0-NAO | 1-SIM] ");
 		scanf("%d",&opt);
 		if(opt==0)
 			exit(1);
@@ -158,6 +133,9 @@ int main(int argc, char *argv[]) {
 		joga();
 		verifica_venceu();
 		
+		//PASSA A VEZ AO PROXIMO JOGADOR
+		jogador==1 ? jogador++ : jogador--;
+		
 		if(vencedor==1){
 			imprimeTrofeu();
 			jogarNovamente();
@@ -166,6 +144,7 @@ int main(int argc, char *argv[]) {
 			imprimeEmpate();
 			jogarNovamente();		
 		}
+		
 	} while(1);
 	return 0;
 }
